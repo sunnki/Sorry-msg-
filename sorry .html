@@ -1,0 +1,260 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Sorry</title>
+
+<link rel="stylesheet" href="https://public.codepenassets.com/css/reset-2.0.min.css">
+
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  html, body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  body {
+    background: radial-gradient(circle at center, #3b0000, #000);
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+    color: #f2f2f2;
+  }
+
+  /* ===== BUTTERFLY BACKGROUND CONTAINER ===== */
+  #app {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  #app canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+  }
+
+  /* ===== PERFECT FIT WILD BORDER ===== */
+  .border-svg {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  /* ===== MAIN CONTENT ===== */
+  .content {
+    position: absolute;
+    inset: 0;
+    padding: 64px 24px;
+    z-index: 2;
+  }
+
+  /* ===== SORRY FLOOD ===== */
+  .sorry {
+    position: absolute;
+    font-size: 20px;
+    color: #ff2e2e;
+    opacity: 0.9;
+    animation: vanish 3s forwards;
+    pointer-events: none;
+    text-transform: lowercase;
+  }
+
+  @keyframes vanish {
+    to { opacity: 0; }
+  }
+
+  /* ===== TYPING TEXT ===== */
+  .text-box {
+    position: absolute;
+    top: 12%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 85%;
+    font-size: 15px;
+    line-height: 1.75;
+    display: none;
+    white-space: pre-wrap;
+  }
+
+  .next-btn {
+    margin-top: 28px;
+    padding: 9px 24px;
+    font-size: 14px;
+    border-radius: 30px;
+    border: none;
+    background: #ff2e2e;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  /* ===== FINAL MESSAGE ===== */
+  .final {
+    display: none;
+    position: absolute;
+    top: 38%;
+    width: 100%;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .main-final {
+    font-size: 18px;
+    line-height: 1.6;
+  }
+
+  .afterthought {
+    margin-top: 18px;
+    font-size: 12px;
+    opacity: 0.55;
+    font-style: italic;
+  }
+</style>
+</head>
+
+<body>
+
+<!-- BUTTERFLIES BACKGROUND -->
+<div id="app"></div>
+
+<!-- WILD BLOOD / BRANCH BORDER -->
+<svg class="border-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+  <rect x="0" y="0" width="100" height="100"
+        fill="none"
+        stroke="#8b0000"
+        stroke-width="1.2"
+        vector-effect="non-scaling-stroke" />
+
+  <path d="M5,0 7,10 4,20 8,30 5,40 9,50 6,60 10,70 7,80 9,90"
+        stroke="#5a0000" stroke-width="0.6" fill="none"/>
+  <path d="M95,0 93,10 96,20 92,30 95,40 91,50 94,60 90,70 93,80 91,90"
+        stroke="#5a0000" stroke-width="0.6" fill="none"/>
+  <path d="M0,6 10,4 20,7 30,5 40,9 50,6 60,10 70,7 80,9 90,6"
+        stroke="#5a0000" stroke-width="0.6" fill="none"/>
+  <path d="M0,94 10,96 20,93 30,95 40,91 50,94 60,90 70,93 80,91 90,94"
+        stroke="#5a0000" stroke-width="0.6" fill="none"/>
+</svg>
+
+<!-- MAIN CONTENT -->
+<div class="content">
+  <div class="text-box" id="text"></div>
+
+  <div class="final" id="final">
+    <div class="main-final">
+      maan ja ab please,<br>
+      jo tu bolegi vo karunga.<br>
+      mil ke baat kar le ya call kar lena<br>
+      yeh dekhne ke baad.<br><br>
+      maan ja na… sorry 😭
+    </div>
+
+    <div class="afterthought">
+      yeh thoda chutiya sa bana 😞<br>
+      laptop nhi hai mere pass,<br>
+      chat gpt pura kaam nhi karta…
+    </div>
+  </div>
+</div>
+
+<!-- BUTTERFLIES SCRIPT -->
+<script type="module">
+  import { butterfliesBackground } from 'https://unpkg.com/threejs-toys@0.0.7/build/threejs-toys.module.cdn.min.js';
+
+  butterfliesBackground({
+    el: document.getElementById('app'),
+    eventsEl: document.body,
+    gpgpuSize: 42,
+    background: 0x000000,
+    material: 'basic',
+    materialParams: {
+      transparent: true,
+      alphaTest: 0.5
+    },
+    texture: 'https://assets.codepen.io/33787/butterflies.png',
+    textureCount: 4,
+    wingsScale: [1, 1, 1],
+    wingsSpeed: 0.7,
+    wingsDisplacementScale: 1.2,
+    noiseCoordScale: 0.01,
+    noiseTimeCoef: 0.0005,
+    noiseIntensity: 0.0025,
+    attractionRadius1: 100,
+    attractionRadius2: 150,
+    maxVelocity: 0.1,
+  });
+</script>
+
+<!-- YOUR PROJECT LOGIC -->
+<script>
+  const content = document.querySelector(".content");
+
+  const sorryInterval = setInterval(() => {
+    const s = document.createElement("div");
+    s.className = "sorry";
+    s.innerText = "sorry";
+
+    s.style.left = Math.random() * window.innerWidth + "px";
+    s.style.top = Math.random() * window.innerHeight + "px";
+
+    content.appendChild(s);
+    setTimeout(() => s.remove(), 3000);
+  }, 90);
+
+  setTimeout(() => {
+    clearInterval(sorryInterval);
+    document.querySelectorAll(".sorry").forEach(e => e.remove());
+    startTyping();
+  }, 6500);
+
+  const message =
+`sorry arya maaf karde,
+kya hua hai vo toh bata
+Agar mere uss din wale baat pe gussa hai
+toh sorry maine jada hi bol diya vaise nhi bolna chaiye tha muhje.
+
+Iss baar maaf karde
+kasam se jo tu bolegi vo karunga
+aaj ke baad koi bhulunga bhi nhi sab yaad rakhunga 
+likh ke bhi rakhunga. chapal se mar liyo per
+maaf karde . koi aur bhi baat hai jispe tu gussa hai,
+vo sunn lunga char gali ke sath 
+
+iss baar maaf karde 😭😭`;
+
+  let i = 0;
+  const textBox = document.getElementById("text");
+
+  function startTyping() {
+    textBox.style.display = "block";
+    const t = setInterval(() => {
+      textBox.textContent += message.charAt(i);
+      i++;
+      if (i >= message.length) {
+        clearInterval(t);
+        showNext();
+      }
+    }, 36);
+  }
+
+  function showNext() {
+    const btn = document.createElement("button");
+    btn.className = "next-btn";
+    btn.innerText = "Next";
+    btn.onclick = () => {
+      textBox.style.display = "none";
+      btn.style.display = "none";
+      document.getElementById("final").style.display = "block";
+    };
+    textBox.appendChild(btn);
+  }
+</script>
+
+</body>
+</html>
